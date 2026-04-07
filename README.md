@@ -33,9 +33,9 @@ Programming language used in this project is Rust. My application uses the Rust 
 
 # Useful Websites
 
-- Rust Official Website https://rust-lang.org/
-- Rust Programming Language Book https://doc.rust-lang.org/book/
-- Full Rust Course https://youtu.be/rQ_J9WH6CGk?si=Jso4iwFtXyJrhqhh
+- Rust Official Website: https://rust-lang.org/
+- Rust Programming Language Book: https://doc.rust-lang.org/book/
+- Full Rust Course: https://youtu.be/rQ_J9WH6CGk?si=Jso4iwFtXyJrhqhh
 
 # Future Work
 
@@ -71,10 +71,10 @@ rust-aircraft-fault-detection/
 
 # Run Software
 
-- Install Software 
+- Install Software:
         curl https://sh.rustup.rs -sSf | sh
         source $HOME/.cargo/env
-- Build Project
+- Build Project:
         cargo build
-- Run Project
+- Run Project:
         cargo run
