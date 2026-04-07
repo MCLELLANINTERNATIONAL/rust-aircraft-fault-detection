@@ -1,0 +1,7 @@
+aircraft_id,aircraft_model,component,temperature_c,vibration_mm_s,flight_cycles,oil_pressure_psi
+BAW737-001,Boeing 737-800,Engine 1,78.5,2.1,2400,32.0
+BAW737-002,Boeing 737-800,Engine 2,88.7,3.8,3600,24.5
+BAW787-101,Boeing 787-9,Left Hydraulic Pump,69.2,1.9,1800,31.0
+BAW787-102,Boeing 787-9,Engine 1,97.3,5.4,5100,16.5
+BAW777-301,Boeing 777-300ER,Engine 2,84.9,3.4,3490,26.0
+BAW777-302,Boeing 777-300ER,Auxiliary Power Unit,91.2,4.0,4200,22.0
