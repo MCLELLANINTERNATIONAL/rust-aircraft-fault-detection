@@ -7,7 +7,7 @@ use serde::Deserialize;
 /// Represents one aircraft record loaded from the CSV file.
 /// The field names match the CSV column headers exactly so that
 /// serde can automatically deserialize each row.
-# [derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 pub struct AircraftRecord {
     pub aircraft_id: String,
     pub aircraft_model: String,
