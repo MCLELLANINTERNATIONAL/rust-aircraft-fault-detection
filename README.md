@@ -1,8 +1,8 @@
 # Overview
 
-As a software engineer, I selected Rust to strengthen my ability to learn a language used in embedded and systems programming while applying structured and object-oriented design techniques in a practical project. Demonstrating my goal by implementing an aviation-focused fault detection system using Rust.
+As a software engineer, I selected Rust to strengthen my ability to learn a language used in embedded and systems programming while applying structured and object-oriented design techniques in a practical project. Demonstrating my goal by implementing an aviation-focused sensor fault detection system using Rust.
 
-The software I developed is a Rust Aircraft Fault Detection System for Predictive Maintenance, a console-based application that loads aircraft sensor data from a CSV file, processes each record, and evaluates whether conditions are normal, warning, or critical. Each aircraft component is analyzed using threshold-based logic for temperature, vibration, flight cycles, and oil pressure.
+The software I developed is a Rust Aircraft Sensor Fault Detection System for Predictive Maintenance, a console-based application that loads aircraft sensor data from a CSV file, processes each record, and evaluates whether conditions are normal, warning, or critical. Each aircraft component is analyzed using threshold-based logic for temperature, vibration, flight cycles, and oil pressure.
 
 The system supports:
 - Viewing sensor data (all aircraft or individual aircraft)
@@ -45,7 +45,7 @@ Programming language used in this project is Rust. My application uses the Rust 
 
 ## Key Features
 - Aircraft sensor data loaded from CSV
-- Fault detection using threshold-based logic
+- Sensor Fault detection using threshold-based logic
 - Severity classification (Low, Moderate, High, Critical)
 - Maintenance recommendations for each component
 - Timestamped results for traceability
