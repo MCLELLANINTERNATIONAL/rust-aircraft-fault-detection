@@ -1,57 +1,30 @@
-// parser.rs
-// Loads sensor data from a CSV file into a Vec<SensorReading>.
+// Loads aircraft sensor data from a CSV file.
 
-use std::fs;
-use crate::models::SensorReading;
+use crate::models::AircraftRecord;
+use csv::ReaderBuilder;
+use std::error::Error;
+use std::fs::File;
 
-// Reads the CSV file and returns a vector of sensor readings.
-// This uses references and Result for safe error handling.
-pub fn load_sensor_data(file_path: &str) -> Result<Vec<SensorReading>, String> {
-    let contents = fs::read_to_string(file_path)
-        .map_err(|error| format!("Failed to read file '{}': {}", file_path, error))?;
+/// Loads aircraft records from the given CSV file path.
+///
+/// Expected headers:
+/// aircraft_id,aircraft_model,temperature_c,vibration_mm_s,flight_cycles,oil_pressure_psi
+pub fn load_aircraft_data_from_csv(
+    file_path: &str,
+) -> Result<Vec<AircraftRecord>, Box<dyn Error>> {
+    // Open the CSV file.
+    let file = File::open(file_path)?;
 
-    let mut readings: Vec<SensorReading> = Vec::new();
+    // Create a CSV reader that assumes the first row contains headers.
+    let mut reader = ReaderBuilder::new().has_headers(true).from_reader(file);
 
-    for (index, line) in contents.lines().enumerate() {
-        // Skip the header row
-        if index == 0 {
-            continue;
-        }
+    let mut aircraft_data = Vec::new();
 
-        let columns: Vec<&str> = line.split(',').collect();
-
-        if columns.len() != 7 {
-            return Err(format!(
-                "Invalid CSV format on line {}. Expected 7 columns, found {}.",
-                index + 1,
-                columns.len()
-            ));
-        }
-
-        let reading = SensorReading {
-            aircraft_id: columns[0].trim().to_string(),
-            aircraft_model: columns[1].trim().to_string(),
-            component: columns[2].trim().to_string(),
-            temperature_c: columns[3]
-                .trim()
-                .parse::<f64>()
-                .map_err(|_| format!("Invalid temperature on line {}", index + 1))?,
-            vibration_mm_s: columns[4]
-                .trim()
-                .parse::<f64>()
-                .map_err(|_| format!("Invalid vibration value on line {}", index + 1))?,
-            flight_cycles: columns[5]
-                .trim()
-                .parse::<u32>()
-                .map_err(|_| format!("Invalid flight cycles on line {}", index + 1))?,
-            oil_pressure_psi: columns[6]
-                .trim()
-                .parse::<f64>()
-                .map_err(|_| format!("Invalid oil pressure on line {}", index + 1))?,
-        };
-
-        readings.push(reading);
+    // Deserialize each CSV row into an AircraftRecord.
+    for result in reader.deserialize() {
+        let record: AircraftRecord = result?;
+        aircraft_data.push(record);
     }
 
-    Ok(readings)
+    Ok(aircraft_data)
 }

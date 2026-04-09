@@ -5,3 +5,21 @@ timestamp,aircraft_id,aircraft_model,component,severity,recommendation,reasons,t
 2026-04-07 17:40:41,"BAW787-102","Boeing 787-9","Engine 1",CRITICAL,"Immediate maintenance action required before next flight.","Engine temperature 97.3°C exceeds critical threshold | Vibration 5.4 mm/s exceeds critical threshold | Flight cycles 5100 exceed critical maintenance interval | Oil pressure 16.5 PSI below critical threshold",97.3,5.4,5100,16.5
 2026-04-07 17:40:41,"BAW777-301","Boeing 777-300ER","Engine 2",NORMAL,"Continue scheduled monitoring. No immediate action required.","No abnormal conditions detected",84.9,3.4,3490,26
 2026-04-07 17:40:41,"BAW777-302","Boeing 777-300ER","Auxiliary Power Unit",WARNING,"Schedule inspection at next maintenance window and monitor trends.","Engine temperature 91.2°C exceeds warning threshold | Vibration 4.0 mm/s exceeds warning threshold | Flight cycles 4200 approach maintenance interval | Oil pressure 22.0 PSI below normal range",91.2,4.0,4200,22
+2026-04-09 12:20:58,"A100","Boeing 737","Engine System",Low,"Continue monitoring engine conditions","No abnormal conditions detected",72.0,3.5,4200,38
+2026-04-09 12:20:58,"A100","Boeing 737","Vibration / Structural System",Low,"Continue monitoring vibration trends","No abnormal conditions detected",72.0,3.5,4200,38
+2026-04-09 12:20:58,"A100","Boeing 737","Usage / Lifecycle",Low,"Flight cycle count is within normal monitored range","No abnormal conditions detected",72.0,3.5,4200,38
+2026-04-09 12:36:46,"A400","Embraer E190","Engine System",Critical,"Ground aircraft and inspect oil delivery system immediately","Engine temperature is above safe operating threshold | Oil pressure is dangerously low",97.0,8.5,12500,16
+2026-04-09 12:36:46,"A400","Embraer E190","Vibration / Structural System",Critical,"Ground aircraft and inspect rotating assemblies immediately","Vibration level is critically high",97.0,8.5,12500,16
+2026-04-09 12:36:46,"A200","Airbus A320","Engine System",High,"Schedule urgent engine inspection","Engine temperature is elevated",91.0,6.4,9800,22
+2026-04-09 12:36:46,"A200","Airbus A320","Vibration / Structural System",High,"Inspect engine mounts and rotating components soon","Vibration level is above acceptable range",91.0,6.4,9800,22
+2026-04-09 12:36:46,"A400","Embraer E190","Usage / Lifecycle",High,"Prioritize heavy maintenance inspection due to accumulated wear","Aircraft has very high cumulative flight cycles",97.0,8.5,12500,16
+2026-04-09 12:36:46,"A200","Airbus A320","Usage / Lifecycle",Moderate,"Review maintenance intervals and monitor wear-related systems","Aircraft has elevated flight cycles",91.0,6.4,9800,22
+2026-04-09 12:36:46,"A500","Boeing 787","Vibration / Structural System",Moderate,"Monitor trend and schedule preventive maintenance","Vibration level is slightly elevated",84.0,4.9,8100,27
+2026-04-09 12:36:46,"A500","Boeing 787","Usage / Lifecycle",Moderate,"Review maintenance intervals and monitor wear-related systems","Aircraft has elevated flight cycles",84.0,4.9,8100,27
+2026-04-09 12:36:46,"A100","Boeing 737","Engine System",Low,"Continue monitoring engine conditions","No abnormal conditions detected",72.0,3.5,4200,38
+2026-04-09 12:36:46,"A100","Boeing 737","Vibration / Structural System",Low,"Continue monitoring vibration trends","No abnormal conditions detected",72.0,3.5,4200,38
+2026-04-09 12:36:46,"A100","Boeing 737","Usage / Lifecycle",Low,"Flight cycle count is within normal monitored range","No abnormal conditions detected",72.0,3.5,4200,38
+2026-04-09 12:36:46,"A300","Cessna 172","Engine System",Low,"Continue monitoring engine conditions","No abnormal conditions detected",68.0,2.1,1800,41
+2026-04-09 12:36:46,"A300","Cessna 172","Vibration / Structural System",Low,"Continue monitoring vibration trends","No abnormal conditions detected",68.0,2.1,1800,41
+2026-04-09 12:36:46,"A300","Cessna 172","Usage / Lifecycle",Low,"Flight cycle count is within normal monitored range","No abnormal conditions detected",68.0,2.1,1800,41
+2026-04-09 12:36:46,"A500","Boeing 787","Engine System",Low,"Continue monitoring engine conditions","No abnormal conditions detected",84.0,4.9,8100,27

@@ -1,5 +1,4 @@
-// main.rs
-// Entry point for the aviation-focused fault detection system.
+// Main program file for the Aircraft Fault Detection System.
 
 mod logger;
 mod models;
@@ -8,46 +7,121 @@ mod reports;
 mod ui;
 
 use logger::save_faults;
-use parser::load_sensor_data;
-use reports::{detect_faults, display_fault_report, display_sensor_data, display_summary};
-use ui::{display_menu, get_user_choice};
+use parser::load_aircraft_data_from_csv;
+use reports::{
+    generate_report_for_all_aircraft,
+    generate_report_for_one_aircraft,
+    show_faults_only,
+    show_summary_all,
+    show_summary_one,
+};
+use ui::{
+    display_sensor_data_all,
+    display_sensor_data_one,
+    print_main_menu,
+    prompt_for_aircraft_id,
+    prompt_for_choice,
+};
 
 fn main() {
-    let app_name = "Aircraft Fault Detection System";
+    // Path to the aircraft sensor data file.
+    let data_file = "data/sample_sensor_data.csv";
 
-    println!("Welcome to {}", app_name);
-    println!("Loading aviation maintenance sensor data...");
-
-    let readings = match load_sensor_data("data/sample_sensor_data.csv") {
+    // Attempt to load the CSV data before starting the menu loop.
+    let aircraft_data = match load_aircraft_data_from_csv(data_file) {
         Ok(data) => data,
         Err(error) => {
-            println!("Error: {}", error);
+            eprintln!("Failed to load aircraft data: {}", error);
             return;
         }
     };
 
-    let results = detect_faults(&readings);
+    // Stores all reports generated during the current run of the program.
+    let mut session_reports = Vec::new();
 
+    // Main application loop.
     loop {
-        display_menu();
-        let choice = get_user_choice();
+        print_main_menu();
+        let choice = prompt_for_choice();
 
-        match choice.as_str() {
-            "1" => display_sensor_data(&readings),
+        match choice.trim() {
+            // View sensor data for all aircraft.
+            "1" => {
+                display_sensor_data_all(&aircraft_data);
+            }
+
+            // View sensor data for one selected aircraft.
             "2" => {
-                display_fault_report(&results);
-                println!("\nSaving advanced fault log...");
-                match save_faults(&results) {
-                    Ok(_) => println!("Advanced log saved to data/fault_log.csv"),
-                    Err(error) => println!("Logging failed: {}", error),
+                let aircraft_id = prompt_for_aircraft_id();
+                display_sensor_data_one(&aircraft_id, &aircraft_data);
+            }
+
+            // Run fault detection for all aircraft and save results.
+            "3" => {
+                let reports = generate_report_for_all_aircraft(&aircraft_data);
+
+                println!("\n--- Fault Detection Report: All Aircraft ---");
+                for report in &reports {
+                    report.display();
+                }
+
+                if let Err(error) = save_faults(&reports) {
+                    eprintln!("Failed to save fault log: {}", error);
+                }
+
+                // Extend the session report list with all generated reports.
+                session_reports.extend(reports);
+            }
+
+            // Run fault detection for one aircraft and save results.
+            "4" => {
+                let aircraft_id = prompt_for_aircraft_id();
+
+                match generate_report_for_one_aircraft(&aircraft_id, &aircraft_data) {
+                    Some(reports) => {
+                        println!("\n--- Fault Detection Report: One Aircraft ---");
+                        for report in &reports {
+                            report.display();
+                        }
+
+                        if let Err(error) = save_faults(&reports) {
+                            eprintln!("Failed to save fault log: {}", error);
+                        }
+
+                        session_reports.extend(reports);
+                    }
+                    None => {
+                        println!("Aircraft with ID '{}' was not found.", aircraft_id);
+                    }
                 }
             }
-            "3" => display_summary(&results),
-            "4" => {
-                println!("Exiting {}. Goodbye.", app_name);
+
+            // View summary for all reports generated this session.
+            "5" => {
+                show_summary_all(&session_reports);
+            }
+
+            // View summary for one selected aircraft.
+            "6" => {
+                let aircraft_id = prompt_for_aircraft_id();
+                show_summary_one(&aircraft_id, &session_reports);
+            }
+
+            // View only reports that represent actual faults.
+            "7" => {
+                show_faults_only(&session_reports);
+            }
+
+            // Exit the program.
+            "8" => {
+                println!("Exiting Aircraft Fault Detection System.");
                 break;
             }
-            _ => println!("Invalid choice. Please enter 1, 2, 3, or 4."),
+
+            // Handle invalid menu input.
+            _ => {
+                println!("Invalid option. Please enter a number from 1 to 8.");
+            }
         }
     }
 }

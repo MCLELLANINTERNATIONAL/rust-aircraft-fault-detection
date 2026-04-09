@@ -1,140 +1,161 @@
-// models.rs
-// Defines the data structures and methods used by the fault detection system.
+// Defines the core data models used by the aircraft fault detection system.
 
-#[derive(Debug, Clone)]
-pub struct SensorReading {
+use chrono::Local;
+use colored::*;
+use serde::Deserialize;
+
+/// Represents one aircraft record loaded from the CSV file.
+/// The field names match the CSV column headers exactly so that
+/// serde can automatically deserialize each row.
+# [derive(Debug, Clone, Deserialize)]
+pub struct AircraftRecord {
     pub aircraft_id: String,
     pub aircraft_model: String,
-    pub component: String,
-    pub temperature_c: f64,
-    pub vibration_mm_s: f64,
+    pub temperature_c: f32,
+    pub vibration_mm_s: f32,
     pub flight_cycles: u32,
-    pub oil_pressure_psi: f64,
+    pub oil_pressure_psi: u32,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+impl AircraftRecord {
+    /// Displays a readable view of one aircraft's sensor data.
+    pub fn display_sensor_data(&self) {
+        println!("{}", "----------------------------------------".blue());
+        println!("{} {}", "Aircraft ID:".bold(), self.aircraft_id.cyan());
+        println!("{} {}", "Model:".bold(), self.aircraft_model.cyan());
+        println!("{} {:.1}", "Temperature (C):".bold(), self.temperature_c);
+        println!("{} {:.1}", "Vibration (mm/s):".bold(), self.vibration_mm_s);
+        println!("{} {}", "Flight Cycles:".bold(), self.flight_cycles);
+        println!("{} {}", "Oil Pressure (PSI):".bold(), self.oil_pressure_psi);
+        println!("{}", "----------------------------------------".blue());
+    }
+}
+
+/// Represents the severity level assigned to a detected issue.
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Severity {
-    Normal,
-    Warning,
+    Low,
+    Moderate,
+    High,
     Critical,
 }
 
+impl Severity {
+    /// Returns a numeric ranking so reports can be sorted from highest to lowest severity.
+    pub fn rank(&self) -> u8 {
+        match self {
+            Severity::Critical => 4,
+            Severity::High => 3,
+            Severity::Moderate => 2,
+            Severity::Low => 1,
+        }
+    }
+
+    /// Returns the severity as a plain string for logging and display.
+    pub fn as_str(&self) -> &str {
+        match self {
+            Severity::Low => "Low",
+            Severity::Moderate => "Moderate",
+            Severity::High => "High",
+            Severity::Critical => "Critical",
+        }
+    }
+
+    /// Returns a colorized label for terminal output.
+    pub fn colored_label(&self) -> ColoredString {
+        match self {
+            Severity::Low => "Low".green(),
+            Severity::Moderate => "Moderate".yellow(),
+            Severity::High => "High".bright_red(),
+            Severity::Critical => "Critical".red().bold(),
+        }
+    }
+}
+
+/// Represents the result of fault analysis for a specific aircraft component.
+///
+/// Multiple results may be created for the same aircraft if the program
+/// checks multiple components or systems.
 #[derive(Debug, Clone)]
 pub struct FaultResult {
+    pub timestamp: String,
     pub aircraft_id: String,
     pub aircraft_model: String,
     pub component: String,
     pub severity: Severity,
     pub recommendation: String,
     pub reasons: Vec<String>,
-    pub temperature_c: f64,
-    pub vibration_mm_s: f64,
+    pub temperature_c: f32,
+    pub vibration_mm_s: f32,
     pub flight_cycles: u32,
-    pub oil_pressure_psi: f64,
+    pub oil_pressure_psi: u32,
 }
 
-impl Severity {
-    pub fn as_str(&self) -> &str {
-        match self {
-            Severity::Normal => "NORMAL",
-            Severity::Warning => "WARNING",
-            Severity::Critical => "CRITICAL",
+impl FaultResult {
+    /// Creates a new fault result and stamps it with the current local time.
+    pub fn new(
+        aircraft_id: &str,
+        aircraft_model: &str,
+        component: &str,
+        severity: Severity,
+        recommendation: &str,
+        reasons: Vec<String>,
+        temperature_c: f32,
+        vibration_mm_s: f32,
+        flight_cycles: u32,
+        oil_pressure_psi: u32,
+    ) -> Self {
+        Self {
+            timestamp: Local::now().format("%Y-%m-%d %H:%M:%S").to_string(),
+            aircraft_id: aircraft_id.to_string(),
+            aircraft_model: aircraft_model.to_string(),
+            component: component.to_string(),
+            severity,
+            recommendation: recommendation.to_string(),
+            reasons,
+            temperature_c,
+            vibration_mm_s,
+            flight_cycles,
+            oil_pressure_psi,
         }
     }
-}
 
-impl SensorReading {
-    pub fn evaluate_status(&self) -> FaultResult {
-        let mut severity = Severity::Normal;
-        let mut reasons: Vec<String> = Vec::new();
+    /// Returns true if the result represents a real fault or elevated condition.
+    pub fn is_fault(&self) -> bool {
+        self.severity != Severity::Low
+    }
 
-        if self.temperature_c >= 95.0 {
-            severity = Severity::Critical;
-            reasons.push(format!(
-                "Engine temperature {:.1}°C exceeds critical threshold",
-                self.temperature_c
-            ));
-        } else if self.temperature_c >= 85.0 {
-            if severity != Severity::Critical {
-                severity = Severity::Warning;
+    /// Displays the fault result in a formatted and colorized way.
+    pub fn display(&self) {
+        println!("{}", "========================================".blue());
+        println!("{} {}", "Scan Time:".bold(), self.timestamp.bright_white());
+        println!("{} {}", "Aircraft ID:".bold(), self.aircraft_id.cyan());
+        println!("{} {}", "Model:".bold(), self.aircraft_model.cyan());
+        println!("{} {}", "Component:".bold(), self.component.magenta());
+        println!("{} {}", "Severity:".bold(), self.severity.colored_label());
+        println!("{} {}", "Recommendation:".bold(), self.recommendation);
+
+        // If no reasons were added, the component is considered normal.
+        if self.reasons.is_empty() {
+            println!("{} {}", "Reasons:".bold(), "No abnormal conditions detected".green());
+        } else {
+            println!("{}", "Reasons:".bold());
+            for reason in &self.reasons {
+                println!("- {}", reason);
             }
-            reasons.push(format!(
-                "Engine temperature {:.1}°C exceeds warning threshold",
-                self.temperature_c
-            ));
         }
 
-        if self.vibration_mm_s >= 5.0 {
-            severity = Severity::Critical;
-            reasons.push(format!(
-                "Vibration {:.1} mm/s exceeds critical threshold",
-                self.vibration_mm_s
-            ));
-        } else if self.vibration_mm_s >= 3.5 {
-            if severity != Severity::Critical {
-                severity = Severity::Warning;
-            }
-            reasons.push(format!(
-                "Vibration {:.1} mm/s exceeds warning threshold",
-                self.vibration_mm_s
-            ));
-        }
-
-        if self.flight_cycles >= 5000 {
-            severity = Severity::Critical;
-            reasons.push(format!(
-                "Flight cycles {} exceed critical maintenance interval",
-                self.flight_cycles
-            ));
-        } else if self.flight_cycles >= 3500 {
-            if severity != Severity::Critical {
-                severity = Severity::Warning;
-            }
-            reasons.push(format!(
-                "Flight cycles {} approach maintenance interval",
-                self.flight_cycles
-            ));
-        }
-
-        if self.oil_pressure_psi < 18.0 {
-            severity = Severity::Critical;
-            reasons.push(format!(
-                "Oil pressure {:.1} PSI below critical threshold",
-                self.oil_pressure_psi
-            ));
-        } else if self.oil_pressure_psi < 25.0 {
-            if severity != Severity::Critical {
-                severity = Severity::Warning;
-            }
-            reasons.push(format!(
-                "Oil pressure {:.1} PSI below normal range",
-                self.oil_pressure_psi
-            ));
-        }
-
-        let recommendation = match severity {
-            Severity::Normal => {
-                "Continue scheduled monitoring. No immediate action required.".to_string()
-            }
-            Severity::Warning => {
-                "Schedule inspection at next maintenance window and monitor trends.".to_string()
-            }
-            Severity::Critical => {
-                "Immediate maintenance action required before next flight.".to_string()
-            }
-        };
-
-        FaultResult {
-            aircraft_id: self.aircraft_id.clone(),
-            aircraft_model: self.aircraft_model.clone(),
-            component: self.component.clone(),
-            severity,
-            recommendation,
-            reasons,
-            temperature_c: self.temperature_c,
-            vibration_mm_s: self.vibration_mm_s,
-            flight_cycles: self.flight_cycles,
-            oil_pressure_psi: self.oil_pressure_psi,
-        }
+        println!(
+            "{} {:.1} | {} {:.1} | {} {} | {} {}",
+            "Temp(C):".bold(),
+            self.temperature_c,
+            "Vibration(mm/s):".bold(),
+            self.vibration_mm_s,
+            "Cycles:".bold(),
+            self.flight_cycles,
+            "Oil PSI:".bold(),
+            self.oil_pressure_psi
+        );
+        println!("{}", "========================================".blue());
     }
 }
