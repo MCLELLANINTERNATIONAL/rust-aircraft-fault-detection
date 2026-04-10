@@ -15,9 +15,10 @@ The purpose of this project was to gain hands-on experience with Rust while appl
 ## Software Demo Video's
 
 ### Video 1:
-Code Walk Through/ Part 1 Functionality: https://www.loom.com/share/af45a6fb23d3403bbfdd617ca6d3118a
+Code Walk Through/ Part-1 Functionality: https://www.loom.com/share/af45a6fb23d3403bbfdd617ca6d3118a
 ### Video 2:
-Part 2 Functionality 
+Part-2 Functionality: https://www.loom.com/share/33187d058551429381e7baa6bce56cab
+
 # Development Environment
 
 ## Software was developed using:
