@@ -23,3 +23,21 @@ timestamp,aircraft_id,aircraft_model,component,severity,recommendation,reasons,t
 2026-04-09 12:36:46,"A300","Cessna 172","Vibration / Structural System",Low,"Continue monitoring vibration trends","No abnormal conditions detected",68.0,2.1,1800,41
 2026-04-09 12:36:46,"A300","Cessna 172","Usage / Lifecycle",Low,"Flight cycle count is within normal monitored range","No abnormal conditions detected",68.0,2.1,1800,41
 2026-04-09 12:36:46,"A500","Boeing 787","Engine System",Low,"Continue monitoring engine conditions","No abnormal conditions detected",84.0,4.9,8100,27
+2026-04-10 15:03:36,"A400","Embraer E190","Engine System",Critical,"Ground aircraft and inspect oil delivery system immediately","Engine temperature is above safe operating threshold | Oil pressure is dangerously low",97.0,8.5,12500,16
+2026-04-10 15:03:36,"A400","Embraer E190","Vibration / Structural System",Critical,"Ground aircraft and inspect rotating assemblies immediately","Vibration level is critically high",97.0,8.5,12500,16
+2026-04-10 15:03:36,"A200","Airbus A320","Engine System",High,"Schedule urgent engine inspection","Engine temperature is elevated",91.0,6.4,9800,22
+2026-04-10 15:03:36,"A200","Airbus A320","Vibration / Structural System",High,"Inspect engine mounts and rotating components soon","Vibration level is above acceptable range",91.0,6.4,9800,22
+2026-04-10 15:03:36,"A400","Embraer E190","Usage / Lifecycle",High,"Prioritize heavy maintenance inspection due to accumulated wear","Aircraft has very high cumulative flight cycles",97.0,8.5,12500,16
+2026-04-10 15:03:36,"A200","Airbus A320","Usage / Lifecycle",Moderate,"Review maintenance intervals and monitor wear-related systems","Aircraft has elevated flight cycles",91.0,6.4,9800,22
+2026-04-10 15:03:36,"A500","Boeing 787","Vibration / Structural System",Moderate,"Monitor trend and schedule preventive maintenance","Vibration level is slightly elevated",84.0,4.9,8100,27
+2026-04-10 15:03:36,"A500","Boeing 787","Usage / Lifecycle",Moderate,"Review maintenance intervals and monitor wear-related systems","Aircraft has elevated flight cycles",84.0,4.9,8100,27
+2026-04-10 15:03:36,"A100","Boeing 737","Engine System",Low,"Continue monitoring engine conditions","No abnormal conditions detected",72.0,3.5,4200,38
+2026-04-10 15:03:36,"A100","Boeing 737","Vibration / Structural System",Low,"Continue monitoring vibration trends","No abnormal conditions detected",72.0,3.5,4200,38
+2026-04-10 15:03:36,"A100","Boeing 737","Usage / Lifecycle",Low,"Flight cycle count is within normal monitored range","No abnormal conditions detected",72.0,3.5,4200,38
+2026-04-10 15:03:36,"A300","Cessna 172","Engine System",Low,"Continue monitoring engine conditions","No abnormal conditions detected",68.0,2.1,1800,41
+2026-04-10 15:03:36,"A300","Cessna 172","Vibration / Structural System",Low,"Continue monitoring vibration trends","No abnormal conditions detected",68.0,2.1,1800,41
+2026-04-10 15:03:36,"A300","Cessna 172","Usage / Lifecycle",Low,"Flight cycle count is within normal monitored range","No abnormal conditions detected",68.0,2.1,1800,41
+2026-04-10 15:03:36,"A500","Boeing 787","Engine System",Low,"Continue monitoring engine conditions","No abnormal conditions detected",84.0,4.9,8100,27
+2026-04-10 15:03:43,"A100","Boeing 737","Engine System",Low,"Continue monitoring engine conditions","No abnormal conditions detected",72.0,3.5,4200,38
+2026-04-10 15:03:43,"A100","Boeing 737","Vibration / Structural System",Low,"Continue monitoring vibration trends","No abnormal conditions detected",72.0,3.5,4200,38
+2026-04-10 15:03:43,"A100","Boeing 737","Usage / Lifecycle",Low,"Flight cycle count is within normal monitored range","No abnormal conditions detected",72.0,3.5,4200,38
